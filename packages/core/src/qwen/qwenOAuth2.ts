@@ -26,7 +26,7 @@ const QWEN_OAUTH_DEVICE_CODE_ENDPOINT = `${QWEN_OAUTH_BASE_URL}/api/v1/oauth2/de
 const QWEN_OAUTH_TOKEN_ENDPOINT = `${QWEN_OAUTH_BASE_URL}/api/v1/oauth2/token`;
 
 // OAuth Client Configuration
-const QWEN_OAUTH_CLIENT_ID = process.env.QWEN_OAUTH_CLIENT_ID || 'YOUR_QWEN_OAUTH_CLIENT_ID';
+const QWEN_OAUTH_CLIENT_ID = process.env['QWEN_OAUTH_CLIENT_ID'] || 'YOUR_QWEN_OAUTH_CLIENT_ID';
 
 const QWEN_OAUTH_SCOPE = 'openid profile email model.completion';
 const QWEN_OAUTH_GRANT_TYPE = 'urn:ietf:params:oauth:grant-type:device_code';
