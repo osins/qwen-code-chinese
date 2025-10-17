@@ -156,7 +156,7 @@ qwen --vlm-switch-mode persist
 }
 ```
 
-> 💡 **Tip**: In YOLO mode (`--yolo`), vision switching happens automatically without prompts when images are detected.
+> 💡 **提示**: 在 YOLO 模式（`--yolo`）下，检测到图像时会自动切换视觉模型而无需提示。
 
 ### 授权
 
