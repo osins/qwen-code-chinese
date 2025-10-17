@@ -1,121 +1,121 @@
-# Changelog
+# 更新日志
 
 ## 0.0.14
 
-- Added plan mode support for task planning
-- Fixed unreliable editCorrector that injects extra escape characters
-- Fixed task tool dynamic updates
-- Added Qwen3-VL-Plus token limits (256K input, 32K output) and highres support
-- Enhanced dashScope cache control
+- 添加了任务规划的计划模式支持
+- 修复了注入额外转义字符的不可靠 editCorrector
+- 修复了任务工具动态更新
+- 添加了 Qwen3-VL-Plus 令牌限制（256K 输入，32K 输出）和高分辨率支持
+- 增强了 dashScope 缓存控制
 
 ## 0.0.13
 
-- Added YOLO mode support for automatic vision model switching with CLI arguments and environment variables.
-- Fixed ripgrep lazy loading to resolve VS Code IDE companion startup issues.
-- Fixed authentication hang when selecting Qwen OAuth.
-- Added OpenAI and Qwen OAuth authentication support to Zed ACP integration.
-- Fixed output token limit for Qwen models.
-- Fixed Markdown list display issues on Windows.
-- Enhanced vision model instructions and documentation.
-- Improved authentication method compatibility across different IDE integrations.
+- 添加了 YOLO 模式支持，可通过 CLI 参数和环境变量自动切换视觉模型。
+- 修复了 ripgrep 惰性加载以解决 VS Code IDE 配套程序启动问题。
+- 修复了选择 Qwen OAuth 时的身份验证挂起问题。
+- 为 Zed ACP 集成添加了 OpenAI 和 Qwen OAuth 身份验证支持。
+- 修复了 Qwen 模型的输出令牌限制。
+- 修复了 Windows 上的 Markdown 列表显示问题。
+- 增强了视觉模型说明和文档。
+- 改进了不同 IDE 集成之间的身份验证方法兼容性。
 
 ## 0.0.12
 
-- Added vision model support for Qwen-OAuth authentication.
-- Synced upstream `gemini-cli` to v0.3.4 with numerous improvements and bug fixes.
-- Enhanced subagent functionality with system reminders and improved user experience.
-- Added tool call type coercion for better compatibility.
-- Fixed arrow key navigation issues on Windows.
-- Fixed missing tool call chunks for OpenAI logging.
-- Fixed system prompt issues to avoid malformed tool calls.
-- Fixed terminal flicker when subagent is executing.
-- Fixed duplicate subagents configuration when running in home directory.
-- Fixed Esc key unable to cancel subagent dialog.
-- Added confirmation prompt for `/init` command when context file exists.
-- Added `skipLoopDetection` configuration option.
-- Fixed `is_background` parameter reset issues.
-- Enhanced Windows compatibility with multi-line paste handling.
-- Improved subagent documentation and branding consistency.
-- Fixed various linting errors and improved code quality.
-- Miscellaneous improvements and bug fixes.
+- 为 Qwen-OAuth 身份验证添加了视觉模型支持。
+- 将上游 `gemini-cli` 同步到 v0.3.4，包含众多改进和错误修复。
+- 通过系统提醒增强了子代理功能并改进了用户体验。
+- 添加了工具调用类型强制转换以获得更好的兼容性。
+- 修复了 Windows 上的箭头键导航问题。
+- 修复了 OpenAI 日志记录中缺少的工具调用块。
+- 修复了系统提示问题以避免格式错误的工具调用。
+- 修复了子代理执行时的终端闪烁问题。
+- 修复了在主目录中运行时重复的子代理配置问题。
+- 修复了 Esc 键无法取消子代理对话框的问题。
+- 当上下文文件存在时为 `/init` 命令添加了确认提示。
+- 添加了 `skipLoopDetection` 配置选项。
+- 修复了 `is_background` 参数重置问题。
+- 通过多行粘贴处理增强了 Windows 兼容性。
+- 改进了子代理文档和品牌一致性。
+- 修复了各种 linting 错误并改进了代码质量。
+- 其他改进和错误修复。
 
 ## 0.0.11
 
-- Added subagents feature with file-based configuration system for specialized AI assistants.
-- Added Welcome Back Dialog with project summary and enhanced quit options.
-- Fixed performance issues with SharedTokenManager causing 20-minute delays.
-- Fixed tool calls UI issues and improved user experience.
-- Fixed credential clearing when switching authentication types.
-- Enhanced subagent capabilities to use tools requiring user confirmation.
-- Improved ReadManyFiles tool with shared line limits across files.
-- Re-implemented tokenLimits class for better compatibility with Qwen and other model types.
-- Fixed chunk validation to avoid unnecessary retries.
-- Resolved EditTool naming inconsistency causing agent confusion loops.
-- Fixed unexpected re-authentication when auth-token is expired.
-- Added Terminal Bench integration tests.
-- Updated multilingual documentation links in README.
-- Fixed various Windows compatibility issues.
-- Miscellaneous improvements and bug fixes.
+- 添加了子代理功能，具有基于文件的配置系统，用于专业 AI 助手。
+- 添加了带有项目摘要和增强退出选项的欢迎回来对话框。
+- 修复了 SharedTokenManager 的性能问题，该问题导致 20 分钟的延迟。
+- 修复了工具调用 UI 问题并改进了用户体验。
+- 修复了切换身份验证类型时的凭据清除问题。
+- 增强了子代理功能，使其能够使用需要用户确认的工具。
+- 通过跨文件共享行限制改进了 ReadManyFiles 工具。
+- 重新实现了 tokenLimits 类，以更好地兼容 Qwen 和其他模型类型。
+- 修复了块验证以避免不必要的重试。
+- 解决了 EditTool 命名不一致导致代理混淆循环的问题。
+- 修复了 auth-token 过期时的意外重新身份验证问题。
+- 添加了 Terminal Bench 集成测试。
+- 更新了 README 中的多语言文档链接。
+- 修复了各种 Windows 兼容性问题。
+- 其他改进和错误修复。
 
 ## 0.0.10
 
-- Synced upstream `gemini-cli` to v0.2.1.
-- Add todo write tool for task management and progress tracking.
+- 将上游 `gemini-cli` 同步到 v0.2.1。
+- 添加了待办事项写入工具用于任务管理和进度跟踪。
 
 ## 0.0.9
 
-- Synced upstream `gemini-cli` to v0.1.21.
-- Fixed token synchronization among multiple Qwen sessions.
-- Improved tool execution with early stop on invalid tool calls.
-- Added explicit `is_background` parameter for shell tool.
-- Enhanced memory management with sub-commands to switch between project and global memory operations.
-- Renamed `GEMINI_DIR` to `QWEN_DIR` for better branding consistency.
-- Added support for Qwen Markdown selection.
-- Fixed parallel tool usage and improved tool reliability.
-- Upgraded integration tests to use Vitest framework.
-- Enhanced VS Code IDE integration with launch configurations.
-- Added terminal setup command for Shift+Enter and Ctrl+Enter support.
-- Fixed GitHub Workflows configuration issues.
-- Improved settings directory and command descriptions.
-- Fixed locale handling in yargs configuration.
-- Added support for `trustedFolders.json` configuration file.
-- Enhanced cross-platform compatibility for sandbox build scripts.
-- Improved error handling and fixed ambiguous literals.
-- Updated documentation links and added IDE integration documentation.
-- Miscellaneous improvements and bug fixes.
+- 将上游 `gemini-cli` 同步到 v0.1.21。
+- 修复了多个 Qwen 会话之间的令牌同步问题。
+- 通过在无效工具调用时提前停止改进了工具执行。
+- 为 shell 工具添加了明确的 `is_background` 参数。
+- 通过子命令增强了内存管理，以在项目和全局内存操作之间切换。
+- 为了更好的品牌一致性，将 `GEMINI_DIR` 重命名为 `QWEN_DIR`。
+- 添加了对 Qwen Markdown 选择的支持。
+- 修复了并行工具使用并改进了工具可靠性。
+- 升级了集成测试以使用 Vitest 框架。
+- 通过启动配置增强了 VS Code IDE 集成。
+- 添加了终端设置命令以支持 Shift+Enter 和 Ctrl+Enter。
+- 修复了 GitHub Workflows 配置问题。
+- 改进了设置目录和命令描述。
+- 修复了 yargs 配置中的区域设置处理。
+- 添加了对 `trustedFolders.json` 配置文件的支持。
+- 增强了沙盒构建脚本的跨平台兼容性。
+- 改进了错误处理并修复了模糊的字面量。
+- 更新了文档链接并添加了 IDE 集成文档。
+- 其他改进和错误修复。
 
 ## 0.0.8
 
-- Synced upstream `gemini-cli` to v0.1.19.
-- Updated documentation branding from **Gemini CLI** to **Qwen Code**.
-- Added multilingual docs links in `README.md`.
-- Added deterministic cache control for the DashScope provider.
-- Added option to choose a project-level or global save location.
-- Limited `grep` results to 25 items by default.
-- `grep` now respects `.qwenignore`.
-- Miscellaneous improvements and bug fixes.
+- 将上游 `gemini-cli` 同步到 v0.1.19。
+- 将文档品牌从 **Gemini CLI** 更新为 **Qwen Code**。
+- 在 `README.md` 中添加了多语言文档链接。
+- 为 DashScope 提供程序添加了确定性缓存控制。
+- 添加了选择项目级或全局保存位置的选项。
+- 默认将 `grep` 结果限制为 25 个项目。
+- `grep` 现在遵守 `.qwenignore`。
+- 其他改进和错误修复。
 
 ## 0.0.7
 
-- Synced upstream `gemini-cli` to v0.1.18.
-- Fixed MCP tools.
-- Fixed Web Fetch tool.
-- Fixed Web Search tool by switching from Google/Gemini to the Tavily API.
-- Made tool calls tolerant of invalid-JSON parameters occasionally returned by the LLM.
-- Prevented concurrent query submissions in rare cases.
-- Corrected Qwen logger exit-handler setup.
-- Separated static QR code and dynamic spinner components.
+- 将上游 `gemini-cli` 同步到 v0.1.18。
+- 修复了 MCP 工具。
+- 修复了 Web Fetch 工具。
+- 通过从 Google/Gemini 切换到 Tavily API 修复了 Web Search 工具。
+- 使工具调用对 LLM 偶尔返回的无效 JSON 参数具有容错性。
+- 防止了罕见情况下的并发查询提交。
+- 修正了 Qwen 记录器退出处理程序设置。
+- 分离了静态 QR 码和动态旋转器组件。
 
 ## 0.0.6
 
-- Added usage statistics logging for Qwen integration.
-- Made `/init` respect the configured context filename and aligned docs with `QWEN.md`.
-- Fixed `EPERM` error when running `qwen --sandbox` on macOS.
-- Fixed terminal flicker while waiting for login.
-- Fixed `glm-4.5` model request error.
+- 为 Qwen 集成添加了使用统计日志记录。
+- 使 `/init` 遵循配置的上下文文件名并将文档与 `QWEN.md` 对齐。
+- 修复了在 macOS 上运行 `qwen --sandbox` 时的 `EPERM` 错误。
+- 修复了等待登录时的终端闪烁问题。
+- 修复了 `glm-4.5` 模型请求错误。
 
 ## 0.0.5
 
-- Added Qwen OAuth login and up to 2,000 free requests per day.
-- Synced upstream `gemini-cli` to v0.1.17.
-- Added the `systemPromptMappings` configuration option.
+- 添加了 Qwen OAuth 登录和每天最多 2,000 次免费请求。
+- 将上游 `gemini-cli` 同步到 v0.1.17。
+- 添加了 `systemPromptMappings` 配置选项。

@@ -1,4 +1,4 @@
-# Qwen Code
+# 通义代码助手
 
 <div align="center">
 
@@ -9,9 +9,9 @@
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen.svg)](https://nodejs.org/)
 [![Downloads](https://img.shields.io/npm/dm/@qwen-code/qwen-code.svg)](https://www.npmjs.com/package/@qwen-code/qwen-code)
 
-**AI-powered command-line workflow tool for developers**
+**AI 驱动的开发者命令行工作流工具**
 
-[Installation](#installation) • [Quick Start](#quick-start) • [Features](#key-features) • [Documentation](./docs/) • [Contributing](./CONTRIBUTING.md)
+[安装](#installation) • [快速开始](#quick-start) • [特性](#key-features) • [文档](./docs/) • [贡献](./CONTRIBUTING.md)
 
 </div>
 
@@ -25,55 +25,55 @@
   
 </div>
 
-Qwen Code is a powerful command-line AI workflow tool adapted from [**Gemini CLI**](https://github.com/google-gemini/gemini-cli) ([details](./README.gemini.md)), specifically optimized for [Qwen3-Coder](https://github.com/QwenLM/Qwen3-Coder) models. It enhances your development workflow with advanced code understanding, automated tasks, and intelligent assistance.
+通义代码助手是一个强大的 AI 驱动的命令行工作流工具，改编自 [**Gemini CLI**](https://github.com/google-gemini/gemini-cli) ([详情](./README.gemini.md))，专门针对 [Qwen3-Coder](https://github.com/QwenLM/Qwen3-Coder) 模型进行了优化。它通过高级代码理解、自动化任务和智能辅助来增强您的开发工作流。
 
-## 💡 Free Options Available
+## 💡 免费选项可用
 
-Get started with Qwen Code at no cost using any of these free options:
+使用以下任何免费选项，零成本开始使用通义代码助手：
 
-### 🔥 Qwen OAuth (Recommended)
+### 🔥 Qwen OAuth (推荐)
 
-- **2,000 requests per day** with no token limits
-- **60 requests per minute** rate limit
-- Simply run `qwen` and authenticate with your qwen.ai account
-- Automatic credential management and refresh
-- Use `/auth` command to switch to Qwen OAuth if you have initialized with OpenAI compatible mode
+- **每日 2,000 次请求**，无令牌限制
+- **每分钟 60 次请求** 的速率限制
+- 只需运行 `qwen` 并使用您的 qwen.ai 账户进行身份验证
+- 自动凭据管理和刷新
+- 如果您使用 OpenAI 兼容模式初始化，请使用 `/auth` 命令切换到 Qwen OAuth
 
-### 🌏 Regional Free Tiers
+### 🌏 地区免费套餐
 
-- **Mainland China**: ModelScope offers **2,000 free API calls per day**
-- **International**: OpenRouter provides **up to 1,000 free API calls per day** worldwide
+- **中国大陆**：魔搭提供**每日 2,000 次免费 API 调用**
+- **国际**：OpenRouter 提供**全球每日最多 1,000 次免费 API 调用**
 
-For detailed setup instructions, see [Authorization](#authorization).
+有关详细设置说明，请参见 [授权](#authorization)。
 
 > [!WARNING]
-> **Token Usage Notice**: Qwen Code may issue multiple API calls per cycle, resulting in higher token usage (similar to Claude Code). We're actively optimizing API efficiency.
+> **令牌使用说明**：通义代码助手可能在每个周期内发出多个 API 调用，导致更高的令牌使用量（类似于 Claude Code）。我们正在积极优化 API 效率。
 
-## Key Features
+## 主要特性
 
-- **Code Understanding & Editing** - Query and edit large codebases beyond traditional context window limits
-- **Workflow Automation** - Automate operational tasks like handling pull requests and complex rebases
-- **Enhanced Parser** - Adapted parser specifically optimized for Qwen-Coder models
-- **Vision Model Support** - Automatically detect images in your input and seamlessly switch to vision-capable models for multimodal analysis
+- **代码理解与编辑** - 查询和编辑超出传统上下文窗口限制的大型代码库
+- **工作流自动化** - 自动执行操作任务，如处理拉取请求和复杂的变基操作
+- **增强解析器** - 专门针对 Qwen-Coder 模型优化的适配解析器
+- **视觉模型支持** - 自动检测输入中的图像，并无缝切换到支持视觉的模型进行多模态分析
 
-## Installation
+## 安装
 
-### Prerequisites
+### 先决条件
 
-Ensure you have [Node.js version 20](https://nodejs.org/en/download) or higher installed.
+确保您已安装 [Node.js 版本 20](https://nodejs.org/en/download) 或更高版本。
 
 ```bash
 curl -qL https://www.npmjs.com/install.sh | sh
 ```
 
-### Install from npm
+### 从 npm 安装
 
 ```bash
 npm install -g @qwen-code/qwen-code@latest
 qwen --version
 ```
 
-### Install from source
+### 从源码安装
 
 ```bash
 git clone https://github.com/QwenLM/qwen-code.git
@@ -82,7 +82,7 @@ npm install
 npm install -g .
 ```
 
-### Install globally with Homebrew (macOS/Linux)
+### 使用 Homebrew 全局安装 (macOS/Linux)
 
 ```bash
 brew install qwen-code
@@ -174,33 +174,33 @@ To completely disable vision model support, add to your `.qwen/settings.json`:
 
 > 💡 **Tip**: In YOLO mode (`--yolo`), vision switching happens automatically without prompts when images are detected.
 
-### Authorization
+### 授权
 
-Choose your preferred authentication method based on your needs:
+根据您的需求选择首选的身份验证方法：
 
-#### 1. Qwen OAuth (🚀 Recommended - Start in 30 seconds)
+#### 1. Qwen OAuth (🚀 推荐 - 30 秒内开始)
 
-The easiest way to get started - completely free with generous quotas:
+最简单的入门方式 - 完全免费且配额充足：
 
 ```bash
-# Just run this command and follow the browser authentication
+# 只需运行此命令并按照浏览器身份验证
 qwen
 ```
 
-**What happens:**
+**发生什么：**
 
-1. **Instant Setup**: CLI opens your browser automatically
-2. **One-Click Login**: Authenticate with your qwen.ai account
-3. **Automatic Management**: Credentials cached locally for future use
-4. **No Configuration**: Zero setup required - just start coding!
+1. **即时设置**：CLI 自动打开您的浏览器
+2. **一键登录**：使用您的 qwen.ai 账户进行身份验证
+3. **自动管理**：凭据缓存在本地以供将来使用
+4. **无需配置**：零设置要求 - 直接开始编码！
 
-**Free Tier Benefits:**
+**免费套餐福利：**
 
-- ✅ **2,000 requests/day** (no token counting needed)
-- ✅ **60 requests/minute** rate limit
-- ✅ **Automatic credential refresh**
-- ✅ **Zero cost** for individual users
-- ℹ️ **Note**: Model fallback may occur to maintain service quality
+- ✅ **每日 2,000 次请求**（无需计算令牌）
+- ✅ **每分钟 60 次请求** 速率限制
+- ✅ **自动凭据刷新**
+- ✅ **个人用户零成本**
+- ℹ️ **注意**：为保持服务质量，可能会发生模型回退
 
 #### 2. OpenAI-Compatible API
 
@@ -232,9 +232,9 @@ Use API keys for OpenAI or other compatible providers:
 > - **International**: Use Alibaba Cloud ModelStudio or OpenRouter
 
 <details>
-<summary><b>🇨🇳 For Users in Mainland China</b></summary>
+<summary><b>🇨🇳 中国大陆用户</b></summary>
 
-**Option 1: Alibaba Cloud Bailian** ([Apply for API Key](https://bailian.console.aliyun.com/))
+**选项 1: 阿里云百炼** ([申请 API 密钥](https://bailian.console.aliyun.com/))
 
 ```bash
 export OPENAI_API_KEY="your_api_key_here"
@@ -242,10 +242,10 @@ export OPENAI_BASE_URL="https://dashscope.aliyuncs.com/compatible-mode/v1"
 export OPENAI_MODEL="qwen3-coder-plus"
 ```
 
-**Option 2: ModelScope (Free Tier)** ([Apply for API Key](https://modelscope.cn/docs/model-service/API-Inference/intro))
+**选项 2: 魔搭 (免费套餐)** ([申请 API 密钥](https://modelscope.cn/docs/model-service/API-Inference/intro))
 
-- ✅ **2,000 free API calls per day**
-- ⚠️ Connect your Aliyun account to avoid authentication errors
+- ✅ **每日 2,000 次免费 API 调用**
+- ⚠️ 连接您的阿里云账户以避免身份验证错误
 
 ```bash
 export OPENAI_API_KEY="your_api_key_here"
@@ -256,9 +256,9 @@ export OPENAI_MODEL="Qwen/Qwen3-Coder-480B-A35B-Instruct"
 </details>
 
 <details>
-<summary><b>🌍 For International Users</b></summary>
+<summary><b>🌍 国际用户</b></summary>
 
-**Option 1: Alibaba Cloud ModelStudio** ([Apply for API Key](https://modelstudio.console.alibabacloud.com/))
+**选项 1: 阿里云模型服务灵材** ([申请 API 密钥](https://modelstudio.console.alibabacloud.com/))
 
 ```bash
 export OPENAI_API_KEY="your_api_key_here"
@@ -266,7 +266,7 @@ export OPENAI_BASE_URL="https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
 export OPENAI_MODEL="qwen3-coder-plus"
 ```
 
-**Option 2: OpenRouter (Free Tier Available)** ([Apply for API Key](https://openrouter.ai/))
+**选项 2: OpenRouter (提供免费套餐)** ([申请 API 密钥](https://openrouter.ai/))
 
 ```bash
 export OPENAI_API_KEY="your_api_key_here"
@@ -276,145 +276,145 @@ export OPENAI_MODEL="qwen/qwen3-coder:free"
 
 </details>
 
-## Usage Examples
+## 使用示例
 
-### 🔍 Explore Codebases
+### 🔍 探索代码库
 
 ```bash
 cd your-project/
 qwen
 
-# Architecture analysis
-> Describe the main pieces of this system's architecture
-> What are the key dependencies and how do they interact?
-> Find all API endpoints and their authentication methods
+# 架构分析
+> 描述此系统架构的主要组成部分
+> 关键依赖项是什么，它们如何交互？
+> 查找所有 API 端点及其身份验证方法
 ```
 
-### 💻 Code Development
+### 💻 代码开发
 
 ```bash
-# Refactoring
-> Refactor this function to improve readability and performance
-> Convert this class to use dependency injection
-> Split this large module into smaller, focused components
+# 重构
+> 重构此函数以提高可读性和性能
+> 将此类转换为使用依赖注入
+> 将此大型模块拆分为更小、更专注的组件
 
-# Code generation
-> Create a REST API endpoint for user management
-> Generate unit tests for the authentication module
-> Add error handling to all database operations
+# 代码生成
+> 为用户管理创建一个 REST API 端点
+> 为身份验证模块生成单元测试
+> 为所有数据库操作添加错误处理
 ```
 
-### 🔄 Automate Workflows
+### 🔄 自动化工作流
 
 ```bash
-# Git automation
-> Analyze git commits from the last 7 days, grouped by feature
-> Create a changelog from recent commits
-> Find all TODO comments and create GitHub issues
+# Git 自动化
+> 分析过去 7 天的 git 提交，按功能分组
+> 根据最近的提交创建变更日志
+> 查找所有 TODO 注释并创建 GitHub 问题
 
-# File operations
-> Convert all images in this directory to PNG format
-> Rename all test files to follow the *.test.ts pattern
-> Find and remove all console.log statements
+# 文件操作
+> 将此目录中的所有图像转换为 PNG 格式
+> 重命名所有测试文件以遵循 *.test.ts 模式
+> 查找并删除所有 console.log 语句
 ```
 
-### 🐛 Debugging & Analysis
+### 🐛 调试与分析
 
 ```bash
-# Performance analysis
-> Identify performance bottlenecks in this React component
-> Find all N+1 query problems in the codebase
+# 性能分析
+> 识别此 React 组件中的性能瓶颈
+> 查找代码库中的所有 N+1 查询问题
 
-# Security audit
-> Check for potential SQL injection vulnerabilities
-> Find all hardcoded credentials or API keys
+# 安全审计
+> 检查潜在的 SQL 注入漏洞
+> 查找所有硬编码的凭据或 API 密钥
 ```
 
-## Popular Tasks
+## 流行任务
 
-### 📚 Understand New Codebases
+### 📚 理解新代码库
 
 ```text
-> What are the core business logic components?
-> What security mechanisms are in place?
-> How does the data flow through the system?
-> What are the main design patterns used?
-> Generate a dependency graph for this module
+> 核心业务逻辑组件是什么？
+> 有哪些安全机制？
+> 数据如何在系统中流动？
+> 使用了哪些主要设计模式？
+> 为该模块生成依赖关系图
 ```
 
-### 🔨 Code Refactoring & Optimization
+### 🔨 代码重构与优化
 
 ```text
-> What parts of this module can be optimized?
-> Help me refactor this class to follow SOLID principles
-> Add proper error handling and logging
-> Convert callbacks to async/await pattern
-> Implement caching for expensive operations
+> 该模块的哪些部分可以优化？
+> 帮我重构此类以遵循 SOLID 原则
+> 添加适当的错误处理和日志记录
+> 将回调转换为 async/await 模式
+> 为昂贵操作实现缓存
 ```
 
-### 📝 Documentation & Testing
+### 📝 文档与测试
 
 ```text
-> Generate comprehensive JSDoc comments for all public APIs
-> Write unit tests with edge cases for this component
-> Create API documentation in OpenAPI format
-> Add inline comments explaining complex algorithms
-> Generate a README for this module
+> 为所有公共 API 生成全面的 JSDoc 注释
+> 为此组件编写包含边界情况的单元测试
+> 以 OpenAPI 格式创建 API 文档
+> 添加解释复杂算法的内联注释
+> 为该模块生成 README
 ```
 
-### 🚀 Development Acceleration
+### 🚀 开发加速
 
 ```text
-> Set up a new Express server with authentication
-> Create a React component with TypeScript and tests
-> Implement a rate limiter middleware
-> Add database migrations for new schema
-> Configure CI/CD pipeline for this project
+> 设置带有身份验证的新 Express 服务器
+> 创建带有 TypeScript 和测试的 React 组件
+> 实现速率限制中间件
+> 为新架构添加数据库迁移
+> 为此项目配置 CI/CD 管道
 ```
 
-## Commands & Shortcuts
+## 命令与快捷键
 
-### Session Commands
+### 会话命令
 
-- `/help` - Display available commands
-- `/clear` - Clear conversation history
-- `/compress` - Compress history to save tokens
-- `/stats` - Show current session information
-- `/exit` or `/quit` - Exit Qwen Code
+- `/help` - 显示可用命令
+- `/clear` - 清除对话历史
+- `/compress` - 压缩历史以节省令牌
+- `/stats` - 显示当前会话信息
+- `/exit` 或 `/quit` - 退出通义代码助手
 
-### Keyboard Shortcuts
+### 键盘快捷键
 
-- `Ctrl+C` - Cancel current operation
-- `Ctrl+D` - Exit (on empty line)
-- `Up/Down` - Navigate command history
+- `Ctrl+C` - 取消当前操作
+- `Ctrl+D` - 退出（在空行上）
+- `Up/Down` - 导航命令历史
 
-## Benchmark Results
+## 基准测试结果
 
-### Terminal-Bench Performance
+### Terminal-Bench 性能
 
-| Agent     | Model              | Accuracy |
+| 代理      | 模型               | 准确率   |
 | --------- | ------------------ | -------- |
-| Qwen Code | Qwen3-Coder-480A35 | 37.5%    |
-| Qwen Code | Qwen3-Coder-30BA3B | 31.3%    |
+| 通义代码助手 | Qwen3-Coder-480A35 | 37.5%    |
+| 通义代码助手 | Qwen3-Coder-30BA3B | 31.3%    |
 
-## Development & Contributing
+## 开发与贡献
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) to learn how to contribute to the project.
+请参阅 [CONTRIBUTING.md](./CONTRIBUTING.md) 了解如何为项目做贡献。
 
-For detailed authentication setup, see the [authentication guide](./docs/cli/authentication.md).
+有关详细的身份验证设置，请参阅 [身份验证指南](./docs/cli/authentication.md)。
 
-## Troubleshooting
+## 故障排除
 
-If you encounter issues, check the [troubleshooting guide](docs/troubleshooting.md).
+如果遇到问题，请查看 [故障排除指南](docs/troubleshooting.md)。
 
-## Acknowledgments
+## 致谢
 
-This project is based on [Google Gemini CLI](https://github.com/google-gemini/gemini-cli). We acknowledge and appreciate the excellent work of the Gemini CLI team. Our main contribution focuses on parser-level adaptations to better support Qwen-Coder models.
+此项目基于 [Google Gemini CLI](https://github.com/google-gemini/gemini-cli)。我们承认并感谢 Gemini CLI 团队的优秀工作。我们的主要贡献集中在解析器级别的适配，以更好地支持 Qwen-Coder 模型。
 
-## License
+## 许可证
 
 [LICENSE](./LICENSE)
 
-## Star History
+## Star 历史
 
-[![Star History Chart](https://api.star-history.com/svg?repos=QwenLM/qwen-code&type=Date)](https://www.star-history.com/#QwenLM/qwen-code&Date)
+[![Star 历史图表](https://api.star-history.com/svg?repos=QwenLM/qwen-code&type=Date)](https://www.star-history.com/#QwenLM/qwen-code&Date)
