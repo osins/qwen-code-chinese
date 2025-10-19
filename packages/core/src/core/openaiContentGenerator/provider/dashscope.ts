@@ -196,10 +196,26 @@ export class DashScopeOpenAICompatibleProvider
               return message;
             }
 
-            return {
-              ...message,
-              content: this.addCacheControlToContent(message.content),
-            } as OpenAI.Chat.ChatCompletionMessageParam;
+            // For DashScope cache control, we need to convert string content to array format
+            // when cache control is required (for streaming requests or when explicitly enabled)
+            // This is required for the cache functionality to work
+            if (typeof message.content === 'string') {
+              // For string content in streaming requests, we convert to array format to add cache control
+              const updatedContent = this.addCacheControlToContent(message.content) as ChatCompletionContentPartWithCache[];
+              
+              return {
+                ...message,
+                content: updatedContent,
+              } as OpenAI.Chat.ChatCompletionMessageParam;
+            } else {
+              // For array content (multimodal), we can safely apply cache control
+              const updatedContent = this.addCacheControlToContent(message.content) as ChatCompletionContentPartWithCache[];
+              
+              return {
+                ...message,
+                content: updatedContent,
+              } as OpenAI.Chat.ChatCompletionMessageParam;
+            }
           });
 
     const updatedTools =
@@ -232,15 +248,21 @@ export class DashScopeOpenAICompatibleProvider
 
   /**
    * Add cache control to message content, handling both string and array formats
+   * For DashScope compatibility, we need to maintain the original format when possible
+   * but add cache control where required
    */
   private addCacheControlToContent(
     content: NonNullable<OpenAI.Chat.ChatCompletionMessageParam['content']>,
-  ): ChatCompletionContentPartWithCache[] {
-    // Convert content to array format if it's a string
-    const contentArray = this.normalizeContentToArray(content);
-
-    // Add cache control to the last text item or create one if needed
-    return this.addCacheControlToContentArray(contentArray);
+  ): string | ChatCompletionContentPartWithCache[] {
+    // If content is a string and we need to add cache control, 
+    // we must convert to array format to include cache_control
+    if (typeof content === 'string') {
+      const contentArray = this.normalizeContentToArray(content);
+      return this.addCacheControlToContentArray(contentArray);
+    }
+    
+    // If content is already an array, process it as multimodal content
+    return this.addCacheControlToContentArray(content as ChatCompletionContentPartWithCache[]);
   }
 
   /**

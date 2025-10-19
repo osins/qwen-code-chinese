@@ -237,13 +237,13 @@ describe('DashScopeOpenAICompatibleProvider', () => {
       temperature: 0.7,
     };
 
-    it('should add cache control to system message only for non-streaming requests', () => {
+    it('should add cache control to system message for non-streaming requests', () => {
       const request = { ...baseRequest, stream: false };
       const result = provider.buildRequest(request, 'test-prompt-id');
 
       expect(result.messages).toHaveLength(2);
 
-      // System message should have cache control
+      // System message should have cache control for non-streaming requests (system_only mode)
       const systemMessage = result.messages[0];
       expect(systemMessage.role).toBe('system');
       expect(systemMessage.content).toEqual([
@@ -260,7 +260,7 @@ describe('DashScopeOpenAICompatibleProvider', () => {
       expect(lastMessage.content).toBe('Hello!');
     });
 
-    it('should add cache control to system message only for non-streaming requests with tools', () => {
+    it('should add cache control to system message for non-streaming requests with tools', () => {
       const requestWithTool: OpenAI.Chat.ChatCompletionCreateParams = {
         ...baseRequest,
         messages: [
@@ -359,7 +359,7 @@ describe('DashScopeOpenAICompatibleProvider', () => {
 
       expect(result.messages).toHaveLength(4);
 
-      // System message should have cache control
+      // System message should have cache control for streaming requests
       const systemMessage = result.messages[0];
       expect(systemMessage.content).toEqual([
         {
@@ -378,7 +378,7 @@ describe('DashScopeOpenAICompatibleProvider', () => {
       expect(secondToolMessage.role).toBe('tool');
       expect(secondToolMessage.content).toBe('Second tool output');
 
-      // Last message should also have cache control
+      // Last message should also have cache control for streaming requests
       const lastMessage = result.messages[3];
       expect(lastMessage.content).toEqual([
         {
@@ -624,9 +624,28 @@ describe('DashScopeOpenAICompatibleProvider', () => {
   });
 
   describe('cache control edge cases', () => {
-    it('should handle request with only system message', () => {
+    it('should handle request with only system message for non-streaming requests', () => {
       const systemOnlyRequest: OpenAI.Chat.ChatCompletionCreateParams = {
         model: 'qwen-max',
+        messages: [{ role: 'system', content: 'System prompt' }],
+      };
+
+      const result = provider.buildRequest(systemOnlyRequest, 'test-prompt-id');
+
+      expect(result.messages).toHaveLength(1);
+      expect(result.messages[0].content).toEqual([
+        {
+          type: 'text',
+          text: 'System prompt',
+          cache_control: { type: 'ephemeral' },
+        },
+      ]);
+    });
+    
+    it('should handle request with only system message for streaming requests', () => {
+      const systemOnlyRequest: OpenAI.Chat.ChatCompletionCreateParams = {
+        model: 'qwen-max',
+        stream: true, // This will trigger cache control
         messages: [{ role: 'system', content: 'System prompt' }],
       };
 
