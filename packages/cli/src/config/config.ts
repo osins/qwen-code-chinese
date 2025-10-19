@@ -120,8 +120,8 @@ export interface CliArgs {
 
 export async function parseArguments(settings: Settings): Promise<CliArgs> {
   const yargsInstance = yargs(hideBin(process.argv))
-    // Set locale to English for consistent output, especially in tests
-    .locale('en')
+    // Set locale based on system language, defaulting to English for consistent output, especially in tests
+    .locale(process.env['LANG']?.startsWith('zh') ? 'zh' : 'en')
     .scriptName('qwen')
     .usage(
       '用法: qwen [选项] [命令]\n\nQwen Code - 启动交互式CLI，使用 -p/--prompt 进入非交互模式',
