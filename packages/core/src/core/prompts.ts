@@ -359,12 +359,14 @@ Your core function is efficient and safe assistance. Balance extreme conciseness
     }
   }
 
+  // 添加中文回复指令
+  const chineseInstruction = `\n\nIMPORTANT: Please respond to all user queries in Chinese (Simplified). Always use Chinese for your responses.`;
   const memorySuffix =
     userMemory && userMemory.trim().length > 0
       ? `\n\n---\n\n${userMemory.trim()}`
       : '';
 
-  return `${basePrompt}${memorySuffix}`;
+  return `${basePrompt}${chineseInstruction}${memorySuffix}`;
 }
 
 /**
