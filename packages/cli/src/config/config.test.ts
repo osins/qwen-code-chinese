@@ -470,9 +470,9 @@ describe('parseArguments', () => {
   });
 
   it('should allow --approval-mode without --yolo', async () => {
-    process.argv = ['node', 'script.js', '--approval-mode', 'auto-edit'];
+    process.argv = ['node', 'script.js', '--approval-mode', 'default'];
     const argv = await parseArguments();
-    expect(argv.approvalMode).toBe('auto-edit');
+    expect(argv.approvalMode).toBe('default');
     expect(argv.yolo).toBe(false);
   });
 
@@ -1041,12 +1041,12 @@ describe('Approval mode tool exclusion logic', () => {
     expect(excludedTools).toContain(WriteFileTool.Name);
   });
 
-  it('should exclude only shell tools in non-interactive mode with auto-edit approval mode', async () => {
+  it('should exclude only shell tools in non-interactive mode with default approval mode', async () => {
     process.argv = [
       'node',
       'script.js',
       '--approval-mode',
-      'auto-edit',
+      'default',
       '-p',
       'test',
     ];
@@ -1101,7 +1101,7 @@ describe('Approval mode tool exclusion logic', () => {
       { args: ['node', 'script.js'] }, // default
       { args: ['node', 'script.js', '--approval-mode', 'plan'] },
       { args: ['node', 'script.js', '--approval-mode', 'default'] },
-      { args: ['node', 'script.js', '--approval-mode', 'auto-edit'] },
+      { args: ['node', 'script.js', '--approval-mode', 'default'] },
       { args: ['node', 'script.js', '--approval-mode', 'yolo'] },
       { args: ['node', 'script.js', '--yolo'] },
     ];
@@ -1120,12 +1120,12 @@ describe('Approval mode tool exclusion logic', () => {
     }
   });
 
-  it('should merge approval mode exclusions with settings exclusions in auto-edit mode', async () => {
+  it('should merge approval mode exclusions with settings exclusions in default mode', async () => {
     process.argv = [
       'node',
       'script.js',
       '--approval-mode',
-      'auto-edit',
+      'default',
       '-p',
       'test',
     ];
@@ -1136,8 +1136,8 @@ describe('Approval mode tool exclusion logic', () => {
     const excludedTools = config.getExcludeTools();
     expect(excludedTools).toContain('custom_tool'); // From settings
     expect(excludedTools).toContain(ShellTool.Name); // From approval mode
-    expect(excludedTools).not.toContain(EditTool.Name); // Should be allowed in auto-edit
-    expect(excludedTools).not.toContain(WriteFileTool.Name); // Should be allowed in auto-edit
+    expect(excludedTools).not.toContain(EditTool.Name); // Should be allowed in default
+    expect(excludedTools).not.toContain(WriteFileTool.Name); // Should be allowed in default
   });
 
   it('should throw an error for invalid approval mode values in loadCliConfig', async () => {
@@ -1153,7 +1153,7 @@ describe('Approval mode tool exclusion logic', () => {
     await expect(
       loadCliConfig(settings, invalidArgv as CliArgs, undefined, []),
     ).rejects.toThrow(
-      'Invalid approval mode: invalid_mode. Valid values are: plan, default, auto-edit, yolo',
+      'Invalid approval mode: invalid_mode. Valid values are: plan, default, default, yolo',
     );
   });
 });
@@ -1894,8 +1894,8 @@ describe('loadCliConfig approval mode', () => {
     expect(config.getApprovalMode()).toBe(ServerConfig.ApprovalMode.DEFAULT);
   });
 
-  it('should set AUTO_EDIT approval mode when --approval-mode=auto-edit', async () => {
-    process.argv = ['node', 'script.js', '--approval-mode', 'auto-edit'];
+  it('should set AUTO_EDIT approval mode when --approval-mode=default', async () => {
+    process.argv = ['node', 'script.js', '--approval-mode', 'default'];
     const argv = await parseArguments();
     const config = await loadCliConfig({}, argv, undefined, []);
     expect(config.getApprovalMode()).toBe(ServerConfig.ApprovalMode.DEFAULT);
@@ -1934,7 +1934,7 @@ describe('loadCliConfig approval mode', () => {
       tools: { approvalMode: 'invalid_mode' },
     } as unknown as Settings;
     await expect(loadCliConfig(settings, argv, undefined, [])).rejects.toThrow(
-      'Invalid approval mode: invalid_mode. Valid values are: plan, default, auto-edit, yolo',
+      'Invalid approval mode: invalid_mode. Valid values are: plan, default, default, yolo',
     );
   });
 
@@ -1972,8 +1972,8 @@ describe('loadCliConfig approval mode', () => {
       expect(config.getApprovalMode()).toBe(ServerConfig.ApprovalMode.DEFAULT);
     });
 
-    it('should override --approval-mode=auto-edit to DEFAULT', async () => {
-      process.argv = ['node', 'script.js', '--approval-mode', 'auto-edit'];
+    it('should override --approval-mode=default to DEFAULT', async () => {
+      process.argv = ['node', 'script.js', '--approval-mode', 'default'];
       const argv = await parseArguments();
       const config = await loadCliConfig({}, argv, undefined, []);
       expect(config.getApprovalMode()).toBe(ServerConfig.ApprovalMode.DEFAULT);

@@ -307,7 +307,7 @@ describe('useAutoAcceptIndicator', () => {
       mockConfigInstance.isTrustedFolder.mockReturnValue(false);
     });
 
-    it('should show a warning when cycling from DEFAULT to AUTO_EDIT', () => {
+    it('should show a warning when cycling from DEFAULT to DEFAULT', () => {
       const errorMessage =
         'Cannot enable privileged approval modes in an untrusted folder.';
       mockConfigInstance.getApprovalMode.mockReturnValue(ApprovalMode.DEFAULT);
@@ -339,7 +339,7 @@ describe('useAutoAcceptIndicator', () => {
       );
     });
 
-    it('should show a warning when cycling from AUTO_EDIT to YOLO', () => {
+    it('should show a warning when cycling from DEFAULT to YOLO', () => {
       const errorMessage =
         'Cannot enable privileged approval modes in an untrusted folder.';
       mockConfigInstance.getApprovalMode.mockReturnValue(ApprovalMode.DEFAULT);
@@ -393,7 +393,7 @@ describe('useAutoAcceptIndicator', () => {
     });
   });
 
-  it('should call onApprovalModeChange when switching to AUTO_EDIT mode', () => {
+  it('should call onApprovalModeChange when switching to DEFAULT mode', () => {
     mockConfigInstance.getApprovalMode.mockReturnValue(ApprovalMode.DEFAULT);
 
     const mockOnApprovalModeChange = vi.fn();
@@ -446,7 +446,7 @@ describe('useAutoAcceptIndicator', () => {
       }),
     );
 
-    // Switch to AUTO_EDIT
+    // Switch to DEFAULT
     act(() => {
       capturedUseKeypressHandler({ name: 'tab', shift: true } as Key);
     });

@@ -256,7 +256,7 @@ describe('Configuration Integration Tests', () => {
       parseArguments = parseArgs;
     });
 
-    it('should parse --approval-mode=auto-edit correctly through the full argument parsing flow', async () => {
+    it('should parse --approval-mode=default correctly through the full argument parsing flow', async () => {
       const originalArgv = process.argv;
 
       try {
@@ -264,7 +264,7 @@ describe('Configuration Integration Tests', () => {
           'node',
           'script.js',
           '--approval-mode',
-          'auto-edit',
+          'default',
           '-p',
           'test',
         ];
@@ -272,7 +272,7 @@ describe('Configuration Integration Tests', () => {
         const argv = await parseArguments();
 
         // Verify that the argument was parsed correctly
-        expect(argv.approvalMode).toBe('auto-edit');
+        expect(argv.approvalMode).toBe('default');
         expect(argv.prompt).toBe('test');
         expect(argv.yolo).toBe(false);
       } finally {
@@ -326,7 +326,7 @@ describe('Configuration Integration Tests', () => {
       }
     });
 
-    it('should parse --approval-mode=default correctly through the full argument parsing flow', async () => {
+    it('should parse --approval-mode=post-default correctly through the full argument parsing flow', async () => {
       const originalArgv = process.argv;
 
       try {

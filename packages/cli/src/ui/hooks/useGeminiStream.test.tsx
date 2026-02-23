@@ -1429,7 +1429,7 @@ describe('useGeminiStream', () => {
       );
     });
 
-    it('should only auto-approve edit tools when switching to AUTO_EDIT mode', async () => {
+    it('should only auto-approve edit tools when switching to DEFAULT mode', async () => {
       const mockOnConfirmReplace = vi.fn().mockResolvedValue(undefined);
       const mockOnConfirmWrite = vi.fn().mockResolvedValue(undefined);
       const mockOnConfirmRead = vi.fn().mockResolvedValue(undefined);
