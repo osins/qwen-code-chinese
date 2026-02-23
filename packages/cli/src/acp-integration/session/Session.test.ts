@@ -100,7 +100,6 @@ describe('Session', () => {
     it.each([
       ['plan', ApprovalMode.PLAN],
       ['default', ApprovalMode.DEFAULT],
-      ['auto-edit', ApprovalMode.AUTO_EDIT],
       ['yolo', ApprovalMode.YOLO],
     ] as const)('maps %s mode', async (modeId, expected) => {
       const result = await session.setMode({

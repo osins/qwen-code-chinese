@@ -344,7 +344,6 @@ export class Session implements SessionContext {
     const modeMap: Record<ApprovalModeValue, ApprovalMode> = {
       plan: ApprovalMode.PLAN,
       default: ApprovalMode.DEFAULT,
-      'auto-edit': ApprovalMode.AUTO_EDIT,
       yolo: ApprovalMode.YOLO,
     };
 
@@ -405,7 +404,7 @@ export class Session implements SessionContext {
     let newModeId: ApprovalModeValue;
     switch (outcome) {
       case ToolConfirmationOutcome.ProceedAlways:
-        newModeId = 'auto-edit';
+        newModeId = 'default';
         break;
       case ToolConfirmationOutcome.ProceedOnce:
       default:

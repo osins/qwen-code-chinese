@@ -97,7 +97,6 @@ export class WebViewProvider {
         const current = (info?.currentModeId || null) as
           | 'plan'
           | 'default'
-          | 'auto-edit'
           | 'yolo'
           | null;
         this.currentModeId = current;
@@ -1014,7 +1013,7 @@ export class WebViewProvider {
 
   /** True if diffs/permissions should be auto-handled without prompting. */
   isAutoMode(): boolean {
-    return this.currentModeId === 'auto-edit' || this.currentModeId === 'yolo';
+    return this.currentModeId === 'yolo';
   }
 
   /** Used by extension to decide if diffs should be suppressed. */

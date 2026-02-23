@@ -889,7 +889,6 @@ const SETTINGS_SCHEMA = {
         options: [
           { value: ApprovalMode.PLAN, label: 'Plan' },
           { value: ApprovalMode.DEFAULT, label: 'Default' },
-          { value: ApprovalMode.AUTO_EDIT, label: 'Auto Edit' },
           { value: ApprovalMode.YOLO, label: 'YOLO' },
         ],
       },

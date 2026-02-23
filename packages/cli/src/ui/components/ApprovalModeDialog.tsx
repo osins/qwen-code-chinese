@@ -37,8 +37,6 @@ const formatModeDescription = (mode: ApprovalMode): string => {
       return t('Analyze only, do not modify files or execute commands');
     case ApprovalMode.DEFAULT:
       return t('Require approval for file edits or shell commands');
-    case ApprovalMode.AUTO_EDIT:
-      return t('Automatically approve file edits');
     case ApprovalMode.YOLO:
       return t('Automatically approve all tools');
     default:

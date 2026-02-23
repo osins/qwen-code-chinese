@@ -12,7 +12,6 @@
 export enum ApprovalMode {
   PLAN = 'plan',
   DEFAULT = 'default',
-  AUTO_EDIT = 'auto-edit',
   YOLO = 'yolo',
 }
 
@@ -22,7 +21,6 @@ export enum ApprovalMode {
 export const APPROVAL_MODE_MAP: Record<string, ApprovalMode> = {
   plan: ApprovalMode.PLAN,
   default: ApprovalMode.DEFAULT,
-  'auto-edit': ApprovalMode.AUTO_EDIT,
   yolo: ApprovalMode.YOLO,
 };
 
@@ -46,11 +44,6 @@ export const APPROVAL_MODE_INFO: Record<
     label: 'Ask before edits',
     title: 'Qwen will ask before each edit. Click to switch modes.',
     iconType: 'edit',
-  },
-  [ApprovalMode.AUTO_EDIT]: {
-    label: 'Edit automatically',
-    title: 'Qwen will edit files automatically. Click to switch modes.',
-    iconType: 'auto',
   },
   [ApprovalMode.YOLO]: {
     label: 'YOLO',

@@ -16,10 +16,6 @@ public enum PermissionMode {
      */
     PLAN("plan"),
     /**
-     * Auto-edit permission mode.
-     */
-    AUTO_EDIT("auto-edit"),
-    /**
      * YOLO permission mode.
      */
     YOLO("yolo");

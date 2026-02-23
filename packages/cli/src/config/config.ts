@@ -69,12 +69,7 @@ import { writeStderrLine } from '../utils/stdioHelpers.js';
 
 const debugLogger = createDebugLogger('CONFIG');
 
-const VALID_APPROVAL_MODE_VALUES = [
-  'plan',
-  'default',
-  'auto-edit',
-  'yolo',
-] as const;
+const VALID_APPROVAL_MODE_VALUES = ['plan', 'default', 'yolo'] as const;
 
 function formatApprovalModeError(value: string): Error {
   return new Error(
@@ -93,10 +88,6 @@ function parseApprovalModeValue(value: string): ApprovalMode {
       return ApprovalMode.DEFAULT;
     case 'yolo':
       return ApprovalMode.YOLO;
-    case 'auto_edit':
-    case 'autoedit':
-    case 'auto-edit':
-      return ApprovalMode.AUTO_EDIT;
     default:
       throw formatApprovalModeError(value);
   }
@@ -307,9 +298,9 @@ export async function parseArguments(): Promise<CliArgs> {
         })
         .option('approval-mode', {
           type: 'string',
-          choices: ['plan', 'default', 'auto-edit', 'yolo'],
+          choices: ['plan', 'default', 'yolo'],
           description:
-            'Set the approval mode: plan (plan only), default (prompt for approval), auto-edit (auto-approve edit tools), yolo (auto-approve all tools)',
+            'Set the approval mode: plan (plan only), default (prompt for approval), yolo (auto-approve all tools)',
         })
         .option('checkpointing', {
           type: 'boolean',
@@ -841,10 +832,6 @@ export async function loadCliConfig(
         excludeUnlessExplicit(ShellTool.Name as ToolName);
         excludeUnlessExplicit(EditTool.Name as ToolName);
         excludeUnlessExplicit(WriteFileTool.Name as ToolName);
-        break;
-      case ApprovalMode.AUTO_EDIT:
-        // In auto-edit non-interactive mode, only tools that still require a prompt are excluded.
-        excludeUnlessExplicit(ShellTool.Name as ToolName);
         break;
       case ApprovalMode.YOLO:
         // No extra excludes for YOLO mode.

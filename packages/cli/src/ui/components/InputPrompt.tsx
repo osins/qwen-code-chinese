@@ -896,8 +896,6 @@ export const InputPrompt: React.FC<InputPromptProps> = ({
     }
   }, [shouldShowSuggestions, onSuggestionsVisibilityChange]);
 
-  const showAutoAcceptStyling =
-    !shellModeActive && approvalMode === ApprovalMode.AUTO_EDIT;
   const showYoloStyling =
     !shellModeActive && approvalMode === ApprovalMode.YOLO;
 
@@ -909,9 +907,6 @@ export const InputPrompt: React.FC<InputPromptProps> = ({
   } else if (showYoloStyling) {
     statusColor = theme.status.errorDim;
     statusText = t('YOLO mode');
-  } else if (showAutoAcceptStyling) {
-    statusColor = theme.status.warningDim;
-    statusText = t('Accepting edits');
   }
 
   const borderColor =

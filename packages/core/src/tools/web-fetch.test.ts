@@ -120,10 +120,10 @@ describe('WebFetchTool', () => {
       });
     });
 
-    it('should return false if approval mode is AUTO_EDIT', async () => {
+    it('should return false if approval mode is PLAN', async () => {
       const tool = new WebFetchTool({
         ...mockConfig,
-        getApprovalMode: () => ApprovalMode.AUTO_EDIT,
+        getApprovalMode: () => ApprovalMode.PLAN,
       } as unknown as Config);
       const params = {
         url: 'https://example.com',
@@ -163,7 +163,7 @@ describe('WebFetchTool', () => {
         );
       }
 
-      expect(setApprovalMode).toHaveBeenCalledWith(ApprovalMode.AUTO_EDIT);
+      expect(setApprovalMode).toHaveBeenCalledWith(ApprovalMode.DEFAULT);
     });
   });
 });

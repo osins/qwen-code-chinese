@@ -77,7 +77,7 @@ class ExitPlanModeToolInvocation extends BaseToolInvocation<
         switch (outcome) {
           case ToolConfirmationOutcome.ProceedAlways:
             this.wasApproved = true;
-            this.setApprovalModeSafely(ApprovalMode.AUTO_EDIT);
+            this.setApprovalModeSafely(ApprovalMode.DEFAULT);
             break;
           case ToolConfirmationOutcome.ProceedOnce:
             this.wasApproved = true;

@@ -231,7 +231,6 @@ export const cancelNotificationSchema = z.object({
 export const approvalModeValueSchema = z.union([
   z.literal('plan'),
   z.literal('default'),
-  z.literal('auto-edit'),
   z.literal('yolo'),
 ]);
 

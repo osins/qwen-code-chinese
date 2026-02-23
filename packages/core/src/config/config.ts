@@ -131,7 +131,6 @@ export {
 export enum ApprovalMode {
   PLAN = 'plan',
   DEFAULT = 'default',
-  AUTO_EDIT = 'auto-edit',
   YOLO = 'yolo',
 }
 
@@ -160,11 +159,6 @@ export const APPROVAL_MODE_INFO: Record<ApprovalMode, ApprovalModeInfo> = {
     id: ApprovalMode.DEFAULT,
     name: 'Default',
     description: 'Require approval for file edits or shell commands',
-  },
-  [ApprovalMode.AUTO_EDIT]: {
-    id: ApprovalMode.AUTO_EDIT,
-    name: 'Auto Edit',
-    description: 'Automatically approve file edits',
   },
   [ApprovalMode.YOLO]: {
     id: ApprovalMode.YOLO,

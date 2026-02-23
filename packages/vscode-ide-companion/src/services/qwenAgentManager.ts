@@ -178,9 +178,9 @@ export class QwenAgentManager {
         const obj = (init || {}) as Record<string, unknown>;
         const modes = obj['modes'] as
           | {
-              currentModeId?: 'plan' | 'default' | 'auto-edit' | 'yolo';
+              currentModeId?: 'plan' | 'default' | 'yolo';
               availableModes?: Array<{
-                id: 'plan' | 'default' | 'auto-edit' | 'yolo';
+                id: 'plan' | 'default' | 'yolo';
                 name: string;
                 description: string;
               }>;
@@ -253,12 +253,7 @@ export class QwenAgentManager {
       // Optimistically notify UI using response
       const result = (res?.result || {}) as { modeId?: string };
       const confirmed =
-        (result.modeId as
-          | 'plan'
-          | 'default'
-          | 'auto-edit'
-          | 'yolo'
-          | undefined) || modeId;
+        (result.modeId as 'plan' | 'default' | 'yolo' | undefined) || modeId;
       this.callbacks.onModeChanged?.(confirmed);
       return confirmed;
     } catch (err) {
@@ -1328,9 +1323,9 @@ export class QwenAgentManager {
    */
   onModeInfo(
     callback: (info: {
-      currentModeId?: 'plan' | 'default' | 'auto-edit' | 'yolo';
+      currentModeId?: 'plan' | 'default' | 'yolo';
       availableModes?: Array<{
-        id: 'plan' | 'default' | 'auto-edit' | 'yolo';
+        id: 'plan' | 'default' | 'yolo';
         name: string;
         description: string;
       }>;
@@ -1343,9 +1338,7 @@ export class QwenAgentManager {
   /**
    * Register mode changed callback
    */
-  onModeChanged(
-    callback: (modeId: 'plan' | 'default' | 'auto-edit' | 'yolo') => void,
-  ): void {
+  onModeChanged(callback: (modeId: 'plan' | 'default' | 'yolo') => void): void {
     this.callbacks.onModeChanged = callback;
     this.sessionUpdateHandler.updateCallbacks(this.callbacks);
   }

@@ -1518,7 +1518,7 @@ describe('useGeminiStream', () => {
       const { result } = renderTestHook(awaitingApprovalToolCalls);
 
       await act(async () => {
-        await result.current.handleApprovalModeChange(ApprovalMode.AUTO_EDIT);
+        await result.current.handleApprovalModeChange(ApprovalMode.DEFAULT);
       });
 
       // Only replace and write_file should be auto-approved

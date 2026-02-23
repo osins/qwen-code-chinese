@@ -145,7 +145,6 @@ export class PermissionController extends BaseController {
     // Map permission modes to approval logic (aligned with VALID_APPROVAL_MODE_VALUES)
     switch (mode) {
       case 'yolo': // Allow all tools
-      case 'auto-edit': // Auto-approve edit operations
       case 'plan': // Auto-approve planning operations
         return { allowed: true };
 
@@ -212,12 +211,7 @@ export class PermissionController extends BaseController {
     }
 
     const mode = payload.mode;
-    const validModes: PermissionMode[] = [
-      'default',
-      'plan',
-      'auto-edit',
-      'yolo',
-    ];
+    const validModes: PermissionMode[] = ['default', 'plan', 'yolo'];
 
     if (!validModes.includes(mode)) {
       throw new Error(

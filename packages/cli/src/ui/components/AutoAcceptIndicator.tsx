@@ -32,11 +32,6 @@ export const AutoAcceptIndicator: React.FC<AutoAcceptIndicatorProps> = ({
       textContent = t('plan mode');
       subText = cycleText;
       break;
-    case ApprovalMode.AUTO_EDIT:
-      textColor = theme.status.warning;
-      textContent = t('auto-accept edits');
-      subText = cycleText;
-      break;
     case ApprovalMode.YOLO:
       textColor = theme.status.error;
       textContent = t('YOLO mode');

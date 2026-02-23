@@ -114,7 +114,7 @@ describe('AcpSessionManager', () => {
       sessionManager.sessionId = 'test-session-id';
 
       const responsePromise = sessionManager.setMode(
-        'auto-edit',
+        'default',
         mockChild,
         pendingRequests,
         nextRequestId,
@@ -128,7 +128,7 @@ describe('AcpSessionManager', () => {
       expect(sentMessage.method).toBe(AGENT_METHODS.session_set_mode);
       expect(sentMessage.params).toEqual({
         sessionId: 'test-session-id',
-        modeId: 'auto-edit',
+        modeId: 'default',
       });
       expect(response).toBeDefined();
     });

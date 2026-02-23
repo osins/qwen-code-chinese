@@ -16,7 +16,7 @@ describe('WebSearchTool', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     mockConfig = {
-      getApprovalMode: vi.fn(() => ApprovalMode.AUTO_EDIT),
+      getApprovalMode: vi.fn(() => ApprovalMode.DEFAULT),
       setApprovalMode: vi.fn(),
       getWebSearchConfig: vi.fn(),
     } as unknown as Config;

@@ -86,11 +86,6 @@ class TestApprovalInvocation extends BaseToolInvocation<
   override async shouldConfirmExecute(): Promise<
     ToolCallConfirmationDetails | false
   > {
-    // Need confirmation unless approval mode is AUTO_EDIT
-    if (this.config.getApprovalMode() === ApprovalMode.AUTO_EDIT) {
-      return false;
-    }
-
     return {
       type: 'edit',
       title: `Confirm Test Tool ${this.params.id}`,
@@ -101,7 +96,7 @@ class TestApprovalInvocation extends BaseToolInvocation<
       newContent: 'Test content',
       onConfirm: async (outcome: ToolConfirmationOutcome) => {
         if (outcome === ToolConfirmationOutcome.ProceedAlways) {
-          this.config.setApprovalMode(ApprovalMode.AUTO_EDIT);
+          this.config.setApprovalMode(ApprovalMode.DEFAULT);
         }
       },
     };
@@ -1855,7 +1850,7 @@ describe('CoreToolScheduler request queueing', () => {
     });
 
     // Verify approval mode was changed
-    expect(approvalMode).toBe(ApprovalMode.AUTO_EDIT);
+    expect(approvalMode).toBe(ApprovalMode.DEFAULT);
   });
 });
 

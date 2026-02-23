@@ -1151,21 +1151,11 @@ export const useGeminiStream = (
   const handleApprovalModeChange = useCallback(
     async (newApprovalMode: ApprovalMode) => {
       // Auto-approve pending tool calls when switching to auto-approval modes
-      if (
-        newApprovalMode === ApprovalMode.YOLO ||
-        newApprovalMode === ApprovalMode.AUTO_EDIT
-      ) {
-        let awaitingApprovalCalls = toolCalls.filter(
+      if (newApprovalMode === ApprovalMode.YOLO) {
+        const awaitingApprovalCalls = toolCalls.filter(
           (call): call is TrackedWaitingToolCall =>
             call.status === 'awaiting_approval',
         );
-
-        // For AUTO_EDIT mode, only approve edit tools (replace, write_file)
-        if (newApprovalMode === ApprovalMode.AUTO_EDIT) {
-          awaitingApprovalCalls = awaitingApprovalCalls.filter((call) =>
-            EDIT_TOOL_NAMES.has(call.request.name),
-          );
-        }
 
         // Process pending tool calls sequentially to reduce UI chaos
         for (const call of awaitingApprovalCalls) {

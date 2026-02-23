@@ -20,7 +20,8 @@ import { makeRelative, shortenPath } from '../utils/paths.js';
 import { isNodeError } from '../utils/errors.js';
 import type { Config } from '../config/config.js';
 import { ApprovalMode } from '../config/config.js';
-import { FileEncoding } from '../services/fileSystemService.js';
+import { FileOperationType } from '../services/fileSystemService.js';
+import type { CommitIntent } from '../services/fileSystemService.js';
 import { DEFAULT_DIFF_OPTIONS, getDiffStat } from './diffOptions.js';
 import { ReadFileTool } from './read-file.js';
 import { ToolNames, ToolDisplayNames } from './tool-names.js';
@@ -248,10 +249,6 @@ class EditToolInvocation implements ToolInvocation<EditToolParams, ToolResult> {
   async shouldConfirmExecute(
     abortSignal: AbortSignal,
   ): Promise<ToolCallConfirmationDetails | false> {
-    if (this.config.getApprovalMode() === ApprovalMode.AUTO_EDIT) {
-      return false;
-    }
-
     let editData: CalculatedEdit;
     try {
       editData = await this.calculateEdit(this.params);
@@ -294,7 +291,7 @@ class EditToolInvocation implements ToolInvocation<EditToolParams, ToolResult> {
       newContent: editData.newContent,
       onConfirm: async (outcome: ToolConfirmationOutcome) => {
         if (outcome === ToolConfirmationOutcome.ProceedAlways) {
-          this.config.setApprovalMode(ApprovalMode.AUTO_EDIT);
+          this.config.setApprovalMode(ApprovalMode.DEFAULT);
         }
 
         if (ideConfirmation) {
@@ -372,20 +369,41 @@ class EditToolInvocation implements ToolInvocation<EditToolParams, ToolResult> {
     try {
       this.ensureParentDirectoriesExist(this.params.file_path);
 
-      // For new files, apply default file encoding setting
-      // For existing files, keep original content as-is (including any BOM character)
-      if (editData.isNewFile) {
-        const useBOM =
-          this.config.getDefaultFileEncoding() === FileEncoding.UTF8_BOM;
-        await this.config
-          .getFileSystemService()
-          .writeTextFile(this.params.file_path, editData.newContent, {
-            bom: useBOM,
-          });
-      } else {
-        await this.config
-          .getFileSystemService()
-          .writeTextFile(this.params.file_path, editData.newContent);
+      const fileSystem =
+        this.config.getFileSystemService() as unknown as import('../services/fileSystemService.js').VersionedFileSystemService;
+      const operation = editData.isNewFile
+        ? FileOperationType.CREATE
+        : FileOperationType.UPDATE;
+
+      let originalHash: string | null = null;
+      if (!editData.isNewFile) {
+        originalHash = await fileSystem.computeFileHash(this.params.file_path);
+      }
+
+      const intent: CommitIntent = {
+        filePath: this.params.file_path,
+        operation,
+        originalHash,
+        committedContent: editData.newContent,
+        versionBefore: null,
+        versionAfter: Date.now().toString(),
+        timestamp: Date.now(),
+      };
+
+      const result = await fileSystem.commitWrite(intent);
+
+      if (!result.success) {
+        const errorMsg = result.error
+          ? `Commit failed: ${result.error}`
+          : `Failed to commit file edit`;
+        return {
+          llmContent: errorMsg,
+          returnDisplay: errorMsg,
+          error: {
+            message: errorMsg,
+            type: ToolErrorType.FILE_WRITE_FAILURE,
+          },
+        };
       }
 
       const fileName = path.basename(this.params.file_path);
@@ -400,7 +418,7 @@ class EditToolInvocation implements ToolInvocation<EditToolParams, ToolResult> {
 
       const fileDiff = Diff.createPatch(
         fileName,
-        editData.currentContent ?? '', // Should not be null here if not isNewFile
+        editData.currentContent ?? '',
         editData.newContent,
         'Current',
         'Proposed',
@@ -414,13 +432,12 @@ class EditToolInvocation implements ToolInvocation<EditToolParams, ToolResult> {
         diffStat,
       };
 
-      // Log file operation for telemetry (without diff_stat to avoid double-counting)
       const mimetype = getSpecificMimeType(this.params.file_path);
       const programmingLanguage = getLanguageFromFilePath(
         this.params.file_path,
       );
       const extension = path.extname(this.params.file_path);
-      const operation = editData.isNewFile
+      const fileOperation = editData.isNewFile
         ? FileOperation.CREATE
         : FileOperation.UPDATE;
 
@@ -428,7 +445,7 @@ class EditToolInvocation implements ToolInvocation<EditToolParams, ToolResult> {
         this.config,
         new FileOperationEvent(
           EditTool.Name,
-          operation,
+          fileOperation,
           editData.newContent.split('\n').length,
           mimetype,
           extension,

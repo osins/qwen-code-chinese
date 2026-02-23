@@ -122,18 +122,6 @@ describe('useAutoAcceptIndicator', () => {
     mockConfigInstance = new (Config as any)() as MockConfigInstanceShape;
   });
 
-  it('should initialize with ApprovalMode.AUTO_EDIT if config.getApprovalMode returns ApprovalMode.AUTO_EDIT', () => {
-    mockConfigInstance.getApprovalMode.mockReturnValue(ApprovalMode.AUTO_EDIT);
-    const { result } = renderHook(() =>
-      useAutoAcceptIndicator({
-        config: mockConfigInstance as unknown as ActualConfigType,
-        addItem: vi.fn(),
-      }),
-    );
-    expect(result.current).toBe(ApprovalMode.AUTO_EDIT);
-    expect(mockConfigInstance.getApprovalMode).toHaveBeenCalledTimes(1);
-  });
-
   it('should initialize with ApprovalMode.DEFAULT if config.getApprovalMode returns ApprovalMode.DEFAULT', () => {
     mockConfigInstance.getApprovalMode.mockReturnValue(ApprovalMode.DEFAULT);
     const { result } = renderHook(() =>
@@ -187,9 +175,9 @@ describe('useAutoAcceptIndicator', () => {
       } as Key);
     });
     expect(mockConfigInstance.setApprovalMode).toHaveBeenCalledWith(
-      ApprovalMode.AUTO_EDIT,
+      ApprovalMode.DEFAULT,
     );
-    expect(result.current).toBe(ApprovalMode.AUTO_EDIT);
+    expect(result.current).toBe(ApprovalMode.DEFAULT);
 
     act(() => {
       capturedUseKeypressHandler({
@@ -304,13 +292,13 @@ describe('useAutoAcceptIndicator', () => {
     );
     expect(result.current).toBe(ApprovalMode.DEFAULT);
 
-    mockConfigInstance.getApprovalMode.mockReturnValue(ApprovalMode.AUTO_EDIT);
+    mockConfigInstance.getApprovalMode.mockReturnValue(ApprovalMode.DEFAULT);
 
     rerender({
       config: mockConfigInstance as unknown as ActualConfigType,
       addItem: vi.fn(),
     });
-    expect(result.current).toBe(ApprovalMode.AUTO_EDIT);
+    expect(result.current).toBe(ApprovalMode.DEFAULT);
     expect(mockConfigInstance.getApprovalMode).toHaveBeenCalledTimes(3);
   });
 
@@ -340,7 +328,7 @@ describe('useAutoAcceptIndicator', () => {
       });
 
       expect(mockConfigInstance.setApprovalMode).toHaveBeenCalledWith(
-        ApprovalMode.AUTO_EDIT,
+        ApprovalMode.DEFAULT,
       );
       expect(mockAddItem).toHaveBeenCalledWith(
         {
@@ -354,9 +342,7 @@ describe('useAutoAcceptIndicator', () => {
     it('should show a warning when cycling from AUTO_EDIT to YOLO', () => {
       const errorMessage =
         'Cannot enable privileged approval modes in an untrusted folder.';
-      mockConfigInstance.getApprovalMode.mockReturnValue(
-        ApprovalMode.AUTO_EDIT,
-      );
+      mockConfigInstance.getApprovalMode.mockReturnValue(ApprovalMode.DEFAULT);
       mockConfigInstance.setApprovalMode.mockImplementation(() => {
         throw new Error(errorMessage);
       });
@@ -424,11 +410,9 @@ describe('useAutoAcceptIndicator', () => {
     });
 
     expect(mockConfigInstance.setApprovalMode).toHaveBeenCalledWith(
-      ApprovalMode.AUTO_EDIT,
+      ApprovalMode.DEFAULT,
     );
-    expect(mockOnApprovalModeChange).toHaveBeenCalledWith(
-      ApprovalMode.AUTO_EDIT,
-    );
+    expect(mockOnApprovalModeChange).toHaveBeenCalledWith(ApprovalMode.DEFAULT);
   });
 
   it('should not call onApprovalModeChange when callback is not provided', () => {
@@ -445,7 +429,7 @@ describe('useAutoAcceptIndicator', () => {
     });
 
     expect(mockConfigInstance.setApprovalMode).toHaveBeenCalledWith(
-      ApprovalMode.AUTO_EDIT,
+      ApprovalMode.DEFAULT,
     );
     // Should not throw an error when callback is not provided
   });
@@ -475,7 +459,7 @@ describe('useAutoAcceptIndicator', () => {
     expect(mockOnApprovalModeChange).toHaveBeenCalledTimes(2);
     expect(mockOnApprovalModeChange).toHaveBeenNthCalledWith(
       1,
-      ApprovalMode.AUTO_EDIT,
+      ApprovalMode.DEFAULT,
     );
     expect(mockOnApprovalModeChange).toHaveBeenNthCalledWith(
       2,
@@ -551,7 +535,7 @@ describe('useAutoAcceptIndicator', () => {
     expect(mockShouldBlockTab).toHaveBeenCalled();
     // Should cycle approval mode when shouldBlockTab returns false
     expect(mockConfigInstance.setApprovalMode).toHaveBeenCalledWith(
-      ApprovalMode.AUTO_EDIT,
+      ApprovalMode.DEFAULT,
     );
 
     Object.defineProperty(process, 'platform', {

@@ -447,7 +447,7 @@ describe('EditTool', () => {
       };
 
       (mockConfig.getApprovalMode as Mock).mockReturnValueOnce(
-        ApprovalMode.AUTO_EDIT,
+        ApprovalMode.DEFAULT,
       );
       const invocation = tool.build(params);
       const result = await invocation.execute(new AbortController().signal);
@@ -488,7 +488,7 @@ describe('EditTool', () => {
       };
 
       (mockConfig.getApprovalMode as Mock).mockReturnValueOnce(
-        ApprovalMode.AUTO_EDIT,
+        ApprovalMode.DEFAULT,
       );
       const invocation = tool.build(params);
       await invocation.execute(new AbortController().signal);
@@ -513,7 +513,7 @@ describe('EditTool', () => {
       };
 
       (mockConfig.getApprovalMode as Mock).mockReturnValueOnce(
-        ApprovalMode.AUTO_EDIT,
+        ApprovalMode.DEFAULT,
       );
       const invocation = tool.build(params);
       await invocation.execute(new AbortController().signal);
@@ -537,7 +537,7 @@ describe('EditTool', () => {
       };
 
       (mockConfig.getApprovalMode as Mock).mockReturnValueOnce(
-        ApprovalMode.AUTO_EDIT,
+        ApprovalMode.DEFAULT,
       );
       const invocation = tool.build(params);
       await invocation.execute(new AbortController().signal);
@@ -641,7 +641,7 @@ describe('EditTool', () => {
       };
 
       (mockConfig.getApprovalMode as Mock).mockReturnValueOnce(
-        ApprovalMode.AUTO_EDIT,
+        ApprovalMode.DEFAULT,
       );
       const invocation = tool.build(params);
       const result = await invocation.execute(new AbortController().signal);
@@ -661,7 +661,7 @@ describe('EditTool', () => {
       };
 
       (mockConfig.getApprovalMode as Mock).mockReturnValueOnce(
-        ApprovalMode.AUTO_EDIT,
+        ApprovalMode.DEFAULT,
       );
       const invocation = tool.build(params);
       const result = await invocation.execute(new AbortController().signal);

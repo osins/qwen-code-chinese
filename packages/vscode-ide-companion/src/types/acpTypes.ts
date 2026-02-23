@@ -186,11 +186,10 @@ export const NEXT_APPROVAL_MODE: {
   [k in ApprovalModeValue]: ApprovalModeValue;
 } = {
   // Hide "plan" from the public toggle sequence for now
-  // Cycle: default -> auto-edit -> yolo -> default
-  default: 'auto-edit',
-  'auto-edit': 'yolo',
-  plan: 'yolo',
+  // Cycle: default -> yolo -> default
+  default: 'yolo',
   yolo: 'default',
+  plan: 'yolo',
 };
 
 // Current mode update (sent by agent when mode changes)

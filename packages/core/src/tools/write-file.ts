@@ -23,8 +23,9 @@ import {
   Kind,
   ToolConfirmationOutcome,
 } from './tools.js';
+import type { CommitIntent } from '../services/fileSystemService.js';
+import { FileOperationType } from '../services/fileSystemService.js';
 import { ToolErrorType } from './tool-error.js';
-import { FileEncoding } from '../services/fileSystemService.js';
 import { makeRelative, shortenPath } from '../utils/paths.js';
 import { getErrorMessage, isNodeError } from '../utils/errors.js';
 import { DEFAULT_DIFF_OPTIONS, getDiffStat } from './diffOptions.js';
@@ -135,10 +136,6 @@ class WriteFileToolInvocation extends BaseToolInvocation<
   override async shouldConfirmExecute(
     _abortSignal: AbortSignal,
   ): Promise<ToolCallConfirmationDetails | false> {
-    if (this.config.getApprovalMode() === ApprovalMode.AUTO_EDIT) {
-      return false;
-    }
-
     const correctedContentResult = await getCorrectedFileContent(
       this.config,
       this.params.file_path,
@@ -182,7 +179,7 @@ class WriteFileToolInvocation extends BaseToolInvocation<
       newContent: correctedContent,
       onConfirm: async (outcome: ToolConfirmationOutcome) => {
         if (outcome === ToolConfirmationOutcome.ProceedAlways) {
-          this.config.setApprovalMode(ApprovalMode.AUTO_EDIT);
+          this.config.setApprovalMode(ApprovalMode.DEFAULT);
         }
 
         if (ideConfirmation) {
@@ -227,12 +224,7 @@ class WriteFileToolInvocation extends BaseToolInvocation<
       correctedContent: fileContent,
       fileExists,
     } = correctedContentResult;
-    // fileExists is true if the file existed (and was readable or unreadable but caught by readError).
-    // fileExists is false if the file did not exist (ENOENT).
-    const isNewFile =
-      !fileExists ||
-      (correctedContentResult.error !== undefined &&
-        !correctedContentResult.fileExists);
+    const isNewFile = !fileExists;
 
     try {
       const dirName = path.dirname(file_path);
@@ -240,32 +232,68 @@ class WriteFileToolInvocation extends BaseToolInvocation<
         fs.mkdirSync(dirName, { recursive: true });
       }
 
-      // Check if file exists and has BOM to preserve encoding
-      // For new files, use the configured default encoding
-      let useBOM = false;
-      if (!isNewFile) {
-        useBOM = await this.config
-          .getFileSystemService()
-          .detectFileBOM(file_path);
-      } else {
-        useBOM = this.config.getDefaultFileEncoding() === FileEncoding.UTF8_BOM;
+      const operation = fileExists
+        ? FileOperationType.UPDATE
+        : FileOperationType.CREATE;
+
+      let originalHash: string | null = null;
+      if (fileExists) {
+        originalHash = await (
+          this.config.getFileSystemService() as unknown as import('../services/fileSystemService.js').VersionedFileSystemService
+        ).computeFileHash(file_path);
       }
 
-      await this.config
-        .getFileSystemService()
-        .writeTextFile(file_path, fileContent, { bom: useBOM });
+      const intent: CommitIntent = {
+        filePath: file_path,
+        operation,
+        originalHash,
+        committedContent: fileContent,
+        versionBefore: null,
+        versionAfter: Date.now().toString(),
+        timestamp: Date.now(),
+      };
 
-      // Generate diff for display result
-      const fileName = path.basename(file_path);
-      // If there was a readError, originalContent in correctedContentResult is '',
-      // but for the diff, we want to show the original content as it was before the write if possible.
-      // However, if it was unreadable, currentContentForDiff will be empty.
-      const currentContentForDiff = correctedContentResult.error
-        ? '' // Or some indicator of unreadable content
-        : originalContent;
+      const result = await (
+        this.config.getFileSystemService() as unknown as import('../services/fileSystemService.js').VersionedFileSystemService
+      ).commitWrite(intent);
 
+      if (!result.success) {
+        const errorMsg = result.error
+          ? `Commit failed: ${result.error}`
+          : `Failed to commit file write`;
+        return {
+          llmContent: errorMsg,
+          returnDisplay: errorMsg,
+          error: {
+            message: errorMsg,
+            type: ToolErrorType.FILE_WRITE_FAILURE,
+          },
+        };
+      }
+
+      const mimetype = getSpecificMimeType(file_path);
+      const programmingLanguage = getLanguageFromFilePath(file_path);
+      const extension = path.extname(file_path);
+      const operationEnum = isNewFile
+        ? FileOperation.CREATE
+        : FileOperation.UPDATE;
+
+      const lineCount = fileContent.split('\n').length;
+      logFileOperation(
+        this.config,
+        new FileOperationEvent(
+          WriteFileTool.Name,
+          operationEnum,
+          lineCount,
+          mimetype,
+          extension,
+          programmingLanguage,
+        ),
+      );
+
+      const currentContentForDiff = originalContent;
       const fileDiff = Diff.createPatch(
-        fileName,
+        path.basename(file_path),
         currentContentForDiff,
         fileContent,
         'Original',
@@ -275,7 +303,7 @@ class WriteFileToolInvocation extends BaseToolInvocation<
 
       const originallyProposedContent = ai_proposed_content || content;
       const diffStat = getDiffStat(
-        fileName,
+        path.basename(file_path),
         currentContentForDiff,
         originallyProposedContent,
         content,
@@ -292,28 +320,9 @@ class WriteFileToolInvocation extends BaseToolInvocation<
         );
       }
 
-      // Log file operation for telemetry (without diff_stat to avoid double-counting)
-      const mimetype = getSpecificMimeType(file_path);
-      const programmingLanguage = getLanguageFromFilePath(file_path);
-      const extension = path.extname(file_path);
-      const operation = isNewFile ? FileOperation.CREATE : FileOperation.UPDATE;
-
-      const lineCount = fileContent.split('\n').length;
-      logFileOperation(
-        this.config,
-        new FileOperationEvent(
-          WriteFileTool.Name,
-          operation,
-          lineCount,
-          mimetype,
-          extension,
-          programmingLanguage,
-        ),
-      );
-
       const displayResult: FileDiff = {
         fileDiff,
-        fileName,
+        fileName: path.basename(file_path),
         originalContent: correctedContentResult.originalContent,
         newContent: correctedContentResult.correctedContent,
         diffStat,
@@ -324,15 +333,12 @@ class WriteFileToolInvocation extends BaseToolInvocation<
         returnDisplay: displayResult,
       };
     } catch (error) {
-      // Capture detailed error information for debugging
       let errorMsg: string;
       let errorType = ToolErrorType.FILE_WRITE_FAILURE;
 
       if (isNodeError(error)) {
-        // Handle specific Node.js errors with their error codes
         errorMsg = `Error writing to file '${file_path}': ${error.message} (${error.code})`;
 
-        // Log specific error types for better debugging
         if (error.code === 'EACCES') {
           errorMsg = `Permission denied writing to file: ${file_path} (${error.code})`;
           errorType = ToolErrorType.PERMISSION_DENIED;
@@ -344,7 +350,6 @@ class WriteFileToolInvocation extends BaseToolInvocation<
           errorType = ToolErrorType.TARGET_IS_DIRECTORY;
         }
 
-        // Include stack trace in debug mode for better troubleshooting
         if (this.config.getDebugMode() && error.stack) {
           debugLogger.debug('Write file error stack:', error.stack);
         }

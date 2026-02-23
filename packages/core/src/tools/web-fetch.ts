@@ -154,11 +154,8 @@ ${textContent}
   override async shouldConfirmExecute(): Promise<
     ToolCallConfirmationDetails | false
   > {
-    // Auto-execute in AUTO_EDIT mode and PLAN mode (read-only tool)
-    if (
-      this.config.getApprovalMode() === ApprovalMode.AUTO_EDIT ||
-      this.config.getApprovalMode() === ApprovalMode.PLAN
-    ) {
+    // Auto-execute in PLAN mode (read-only tool)
+    if (this.config.getApprovalMode() === ApprovalMode.PLAN) {
       return false;
     }
 
@@ -169,7 +166,7 @@ ${textContent}
       urls: [this.params.url],
       onConfirm: async (outcome: ToolConfirmationOutcome) => {
         if (outcome === ToolConfirmationOutcome.ProceedAlways) {
-          this.config.setApprovalMode(ApprovalMode.AUTO_EDIT);
+          this.config.setApprovalMode(ApprovalMode.DEFAULT);
         }
       },
     };

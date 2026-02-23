@@ -166,9 +166,9 @@ describe('ExitPlanModeTool', () => {
       }
 
       expect(mockConfig.setApprovalMode).toHaveBeenCalledWith(
-        ApprovalMode.AUTO_EDIT,
+        ApprovalMode.DEFAULT,
       );
-      expect(approvalMode).toBe(ApprovalMode.AUTO_EDIT);
+      expect(approvalMode).toBe(ApprovalMode.DEFAULT);
     });
 
     it('should remain in plan mode when confirmation is rejected', async () => {
